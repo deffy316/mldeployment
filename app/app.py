@@ -15,18 +15,22 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.get_json()
-    input_features = np.array(data["features"])
+    # Validate the "features" key
+    if "features" not in data:
+        return jsonify({"error": '"features" key is missing'}), 400
 
+    
+    input_features = np.array(data["features"])
     predictions = []
     confidences = []
 
     for i, sample in enumerate(input_features):
         reshaped_sample = sample.reshape(1,-1)
         prediction = model.predict(reshaped_sample)
-        predictions.append(int(prediction))
+        predictions.append(prediction.item())
         probability = model.predict_proba(reshaped_sample)
         confidence = probability[0][prediction[0]]
-        confidences.append(float(confidence))
+        confidences.append(confidence.item())
 
     return jsonify({"prediction": predictions,
 		            "confidence": confidences})
