@@ -34,7 +34,7 @@ def predict():
     for i, sample in enumerate(input_features):
 
         if len(sample) != 12:
-            return jsonify({"error": f"Sample at index {i} does not have exactly 4 values"}), 400
+            return jsonify({"error": f"Sample at index {i} does not have exactly 12 values"}), 400
         try:
             # Check float conversion
             [float(x) for x in sample]
