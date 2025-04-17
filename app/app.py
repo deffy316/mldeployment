@@ -23,17 +23,17 @@ def predict():
     input_features = data["features"]
     predictions = []
     confidences = []
-
-    # Check that it's a list of lists with exactly 4 float-compatible values
-    if not isinstance(input_features, list):
-        return jsonify({"error": '"features" should be a list of lists',
-                        "input_data_type": str(type(input_features))
-                        }
-                    ), 400
     
     input_features = np.array(input_features)
     for i, sample in enumerate(input_features):
         
+        if len(sample) != 4:
+            return jsonify({"error": f"Sample at index {i} does not have exactly 12 values"}), 400
+        try:
+            # Check float conversion
+            [float(x) for x in sample]
+        except ValueError:
+            return jsonify({"error": f"Sample at index {i} contains non-numeric values"}), 400
         
         reshaped_sample = sample.reshape(1,-1)
         prediction = model.predict(reshaped_sample)

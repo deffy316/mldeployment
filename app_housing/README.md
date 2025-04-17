@@ -8,11 +8,11 @@ cd app_housing
 docker build -t ml-housing-model .
 
 # Run Docker container
-docker run -p 8001:9001 ml-model
+docker run -p 8000:9000 ml-housing-model
 
 # Test the API in new terminal
 
-curl -X POST http://localhost:9001/predict \
+curl -X POST http://localhost:8000/predict \
      -H "Content-Type: application/json" \
      -d '{"features": [[7420, 4, 2, 3, 1, 0, 0, 0, 1, 2, 1, 1.0]]}'
 
@@ -24,7 +24,7 @@ expected output
 }
 # The API can handle multiple sample
 
-curl -X POST http://localhost:9001/predict \\ \
+curl -X POST http://localhost:8000/predict \\ \
      -H "Content-Type: application/json" \\ \
      -d '{"features": [[7420, 4, 2, 3, 1, 0, 0, 0, 1, 2, 1, 1.0],[8960, 4, 4, 4, 1, 0, 0, 0, 1, 3, 0, 1.0]]}'
 
@@ -38,7 +38,7 @@ expected output
 
 # Using the API
 When using the API ensure that you have exactly 12 input feature or it will throw the error.\
-The number are related to column name in order\
+The number are related to column name in order. \
 When the feature is a yes or no, input 1 for yes and 0 for no. \
 area - Area of a House in square feet	\
 bedrooms - Number of House Bedrooms	\
